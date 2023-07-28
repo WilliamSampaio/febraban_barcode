@@ -35,10 +35,10 @@ def barcode(
     produto: int,
     segmento: int,
     codigo_moeda: int,
-    valor: str,
+    valor: Decimal,
     id_empresa_orgao: str,
-    vencimento: date,
-    dados_campo_livre: str,
+    dados_campo_livre: str = '',
+    vencimento: date | None = None,
 ):
     """
     Identificação da Empresa/Órgão:
@@ -63,7 +63,7 @@ def barcode(
 
     numeracao += '_'
 
-    str_valor = str(int(Decimal(valor) * 100)).zfill(11)
+    str_valor = str(int(valor * 100)).zfill(11)
 
     numeracao += str_valor
 
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         produto=PRODUTO_ARRECADACAO,
         segmento=SEGMENTO_PREFEITURA,
         codigo_moeda=MODULO10_VALOR_EFETIVO,
-        valor='999.01',
+        valor=Decimal('999.01'),
         id_empresa_orgao='4321',
         vencimento=date(2023, 7, 30),
         dados_campo_livre='99999',
