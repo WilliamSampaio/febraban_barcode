@@ -18,6 +18,40 @@ MODULO11_VALOR_EFETIVO = 8
 MODULO11_QUANTIDADE_MOEDA = 9
 
 
+def linha_digitavel(barcode: str):
+    if len(barcode) != 44:
+        raise Exception('Código de barra inválido.')
+
+    codigo_moeda = int(barcode[2])
+
+    modulo = ''
+    if (
+        codigo_moeda == MODULO10_VALOR_EFETIVO
+        or codigo_moeda == MODULO10_QUANTIDADE_MOEDA
+    ):
+        modulo = 10
+    elif (
+        codigo_moeda == MODULO11_VALOR_EFETIVO
+        or codigo_moeda == MODULO11_QUANTIDADE_MOEDA
+    ):
+        modulo = 11
+    else:
+        raise Exception('Código moeda inválido.')
+
+    str_linha_digitavel = ''
+
+    partes = [barcode[i : i + 11] for i in range(0, len(barcode), 11)]
+
+    for parte in partes:
+        if modulo == 10:
+            str_linha_digitavel += parte + ' ' + str(modulo10(parte)) + '   '
+        else:
+            # modulo10 por equanto, ate implementar def modulo11
+            str_linha_digitavel += parte + ' ' + modulo10(parte) + '   '
+
+    return str_linha_digitavel.strip()
+
+
 def modulo10(sequencia):
     """
     O DAC (Dígito de Auto-Conferência) módulo 10, de um número é calculado
@@ -160,3 +194,4 @@ if __name__ == '__main__':
     )
 
     print(result)
+    print(linha_digitavel(result))
