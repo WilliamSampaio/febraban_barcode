@@ -18,15 +18,15 @@ MODULO11_VALOR_EFETIVO = 8
 MODULO11_QUANTIDADE_MOEDA = 9
 
 
-def dac_modulo10(sequencia):
+def modulo10(sequencia):
     """
-    O DAC (Dígito de Auto-Conferência) módulo 10, de um número é calculado 
-    multiplicando cada algarismo, pela seqüência de multiplicadores 2, 1, 2, 1, ... 
+    O DAC (Dígito de Auto-Conferência) módulo 10, de um número é calculado
+    multiplicando cada algarismo, pela seqüência de multiplicadores 2, 1, 2, 1, ...
     posicionados da direita para a esquerda.
 
-    A soma dos algarismos do produto é dividida por 10 e o DAC será a diferença 
+    A soma dos algarismos do produto é dividida por 10 e o DAC será a diferença
     entre o divisor (10) e o resto da divisão:
-        
+
         DAC = 10 - (resto da divisão)
 
     Observação: quando o resto da divisão for 0 (zero), o DAC calculado é o 0 (zero).
@@ -35,12 +35,12 @@ def dac_modulo10(sequencia):
 
     Calcular o DAC módulo 10 da seguinte seqüência de números: 01230067896.
     A fórmula do cálculo é:
-        
+
         1. Multiplicação pela sequência 2, 1, 2, 1, ... da direita para a esquerda.
               0  1  2  3  0  0  6  7  8  9  6
             X 2  1  2  1  2  1  2  1  2  1  2
               0  1  4  3  0  0 12  7 16  9 12
-    
+
         2. Soma dos dígitos do produto
             0 + 1 + 4 + 3 + 0 + 0 + 1 + 2 + 7 + 1 + 6 + 9 + 1 + 2 = 37
             Observação: Cada dígito deverá ser somado individualmente.
@@ -48,7 +48,7 @@ def dac_modulo10(sequencia):
         3. Divisão do resultado da soma acima por 10
             37 : 10 = 3 , resto = 7
             DAC = 10 - (resto da divisão), portando 10 - 7 = 3
-    
+
     O DAC da seqüência numérica é igual a “3”.
     """
     multiplicador_atual = 2
@@ -67,6 +67,12 @@ def dac_modulo10(sequencia):
     if resto_divisao == 0:
         return resto_divisao
     return 10 - resto_divisao
+
+
+def digito_verificador_modulo10(campo1: str, campo2: str):
+    return str(modulo10(campo1 + campo2))
+
+
 def campo_livre(
     vencimento: date | None = None,
     dados_campo_livre: str = '',
@@ -106,17 +112,13 @@ def barcode(
     str_identificacao_segmento = str(segmento)
     str_codigo_moeda = str(codigo_moeda)
 
-    numeracao += str_identificacao_produto
-    numeracao += str_identificacao_segmento
-    numeracao += str_codigo_moeda
-
-    numeracao += '_'
+    parte1 = (
+        str_identificacao_produto
+        + str_identificacao_segmento
+        + str_codigo_moeda
+    )
 
     str_valor = str(int(valor * 100)).zfill(11)
-
-    numeracao += str_valor
-
-    numeracao += id_empresa_orgao
 
     """
     Se for utilizado o CNPJ para identificar a Empresa/Órgão, haverá uma
@@ -128,9 +130,20 @@ def barcode(
         comprimento=(21 if len(id_empresa_orgao) == 14 else 25),
     )
 
-    numeracao += str_campo_livre
+    parte2 = str_valor + id_empresa_orgao + str_campo_livre
 
-    print(len(numeracao))
+    digito_verificador = ''
+
+    if (
+        codigo_moeda == MODULO10_VALOR_EFETIVO
+        or codigo_moeda == MODULO10_QUANTIDADE_MOEDA
+    ):
+        digito_verificador = digito_verificador_modulo10(parte1, parte2)
+
+    numeracao += parte1 + digito_verificador + parte2
+
+    # print(len(numeracao))
+
     return numeracao
 
 
@@ -138,12 +151,12 @@ if __name__ == '__main__':
 
     result = barcode(
         produto=PRODUTO_ARRECADACAO,
-        segmento=SEGMENTO_PREFEITURA,
+        segmento=0,
         codigo_moeda=MODULO10_VALOR_EFETIVO,
-        valor=Decimal('999.01'),
-        id_empresa_orgao='4321',
-        vencimento=date(2023, 7, 30),
-        dados_campo_livre='99999',
+        valor=Decimal('0.01'),
+        id_empresa_orgao='0973',
+        vencimento=date(2023, 7, 29),
+        dados_campo_livre='23300',
     )
 
     print(result)
