@@ -277,5 +277,27 @@ if __name__ == '__main__':
         dados_campo_livre='23300',
     )
 
-    print(result)
-    print(linha_digitavel(result))
+    # print(result)
+    # print(linha_digitavel(result))
+
+    # image_png(
+    #     filename='teste.png',
+    #     barcode=result,
+    #     linha_digitavel=linha_digitavel(result),
+    # )
+
+    # image_svg(
+    #     filename='teste.svg',
+    #     barcode=result,
+    #     linha_digitavel=linha_digitavel(result),
+    # )
+
+    # html_base64_teste(
+    #     'index1.html',
+    #     base64_png(result, linha_digitavel=linha_digitavel(result)),
+    # )
+
+    # html_base64_teste(
+    #     'index2.html',
+    #     base64_svg(result, linha_digitavel=linha_digitavel(result)),
+    # )
