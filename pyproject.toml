@@ -7,6 +7,10 @@ license = "MIT"
 readme = "README.md"
 packages = [{include = "febraban_barcode"}]
 
+[tool.poetry.urls]
+"Documentação" = "https://febraban-barcode.readthedocs.io/pt_BR/latest/"
+"Código" = "https://github.com/WilliamSampaio/febraban_barcode"
+
 [tool.poetry.dependencies]
 python = "^3.11"
 python-barcode = "^0.15.1"
