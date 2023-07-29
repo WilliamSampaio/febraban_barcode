@@ -6,7 +6,7 @@ from barcode import ITF
 from barcode.writer import ImageWriter, SVGWriter
 
 
-def base64_png(barcode: str, linha_digitavel: str | None = None):
+def base64_png(barcode: str, linha_digitavel: str | None = None) -> str:
     data = BytesIO()
     ITF(barcode, writer=ImageWriter()).write(
         data,
@@ -24,7 +24,7 @@ def base64_png(barcode: str, linha_digitavel: str | None = None):
     return 'data:image/png;charset=utf-8;base64,' + b64
 
 
-def base64_svg(barcode: str, linha_digitavel: str | None = None):
+def base64_svg(barcode: str, linha_digitavel: str | None = None) -> str:
     data = BytesIO()
     ITF(barcode, writer=SVGWriter()).write(
         data,
@@ -42,6 +42,6 @@ def base64_svg(barcode: str, linha_digitavel: str | None = None):
     return 'data:image/svg+xml;charset=utf-8;base64,' + b64
 
 
-def html_base64_teste(filename: str | Path, base64: str):
+def html_base64_teste(filename: str | Path, base64: str) -> None:
     with open(filename, 'w') as f:
         f.write("<img src='{}'>".format(base64))

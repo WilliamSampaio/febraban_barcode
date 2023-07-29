@@ -8,7 +8,7 @@ from PIL import Image
 
 def image_png(
     filename: str | Path, barcode: str, linha_digitavel: str | None = None
-):
+) -> None:
     data = BytesIO()
     ITF(barcode, writer=ImageWriter()).write(
         data,
@@ -27,7 +27,7 @@ def image_png(
 
 def image_svg(
     filename: str | Path, barcode: str, linha_digitavel: str | None = None
-):
+) -> None:
     with open(filename, 'wb') as f:
         ITF(barcode, writer=SVGWriter()).write(
             f,

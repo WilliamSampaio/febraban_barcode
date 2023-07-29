@@ -29,7 +29,7 @@ def barcode(
     id_empresa_orgao: str,
     dados_campo_livre: str = '',
     vencimento: date | None = None,
-):
+) -> str:
     """
     Identificação da Empresa/Órgão:
         4  posições: Código Febraban ou código de compensação
@@ -96,7 +96,7 @@ def barcode(
     return numeracao
 
 
-def linha_digitavel(barcode: str):
+def linha_digitavel(barcode: str) -> str:
     if len(barcode) != 44:
         raise Exception('Código de barra inválido.')
 

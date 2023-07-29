@@ -1,4 +1,4 @@
-def modulo11(sequencia):
+def modulo11(sequencia) -> int:
     """
     O DAC (Dígito de Auto-Conferência) módulo 11, de um número é calculado multiplicando
     cada algarismo, pela seqüência de multiplicadores 2,3,4,5,6,7,8,9,2,3,4....
@@ -47,5 +47,5 @@ def modulo11(sequencia):
     return 11 - resto_divisao
 
 
-def digito_verificador_modulo11(campo1: str, campo2: str):
+def digito_verificador_modulo11(campo1: str, campo2: str) -> str:
     return str(modulo11(campo1 + campo2))

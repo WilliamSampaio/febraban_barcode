@@ -1,4 +1,4 @@
-def modulo10(sequencia):
+def modulo10(sequencia) -> int:
     """
     O DAC (Dígito de Auto-Conferência) módulo 10, de um número é calculado
     multiplicando cada algarismo, pela seqüência de multiplicadores 2, 1, 2, 1, ...
@@ -49,5 +49,5 @@ def modulo10(sequencia):
     return 10 - resto_divisao
 
 
-def digito_verificador_modulo10(campo1: str, campo2: str):
+def digito_verificador_modulo10(campo1: str, campo2: str) -> str:
     return str(modulo10(campo1 + campo2))
