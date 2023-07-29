@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "febraban_barcode"}]
 
 [tool.poetry.urls]
-"Documentação" = "https://febraban-barcode.readthedocs.io/pt_BR/latest/"
+"Documentação" = "https://febraban-barcode.readthedocs.io/"
 "Código" = "https://github.com/WilliamSampaio/febraban_barcode"
 
 [tool.poetry.dependencies]
