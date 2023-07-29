@@ -1,18 +1,29 @@
 [tool.poetry]
 name = "febraban-barcode"
 version = "0.1.0"
-description = ""
+description = "Implementação em python do layout padrão de arrecadação/recebimento com utilização do código de barras da Febraban."
 authors = ["William Sampaio <1997wbms@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "febraban_barcode"}]
 
+[tool.poetry.urls]
+"Documentação" = "https://febraban-barcode.readthedocs.io/pt_BR/latest/"
+"Código" = "https://github.com/WilliamSampaio/febraban_barcode"
+
 [tool.poetry.dependencies]
 python = "^3.11"
+python-barcode = "^0.15.1"
+pillow = "^10.0.0"
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.12.0"
 blue = "^0.9.1"
+
+[tool.poetry.group.doc.dependencies]
+mkdocs-material = "^9.1.21"
+mkdocstrings = "^0.22.0"
+mkdocstrings-python = "^1.2.1"
 
 [build-system]
 requires = ["poetry-core"]
