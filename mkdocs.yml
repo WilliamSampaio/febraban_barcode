@@ -1,0 +1,8 @@
+site_name: Febraban Barcode
+repo_url: https://github.com/WilliamSampaio/febraban_barcode/tree/develop
+repo_name: WilliamSampaio/febraban_barcode
+edit_uri: tree/master/docs
+
+theme:
+  name: material
+  language: pt-BR
