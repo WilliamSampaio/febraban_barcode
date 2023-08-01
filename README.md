@@ -12,7 +12,7 @@ A arrecadação de tributos/taxas estaduais e municipais e contas de concession�
 Com este pacote é possível:
 
 * Gerar a numeração do código de barras
-* Gerar a linha digitável com os digitos verificadores de cada bloco
+* Gerar a linha digitável com os dígitos verificadores de cada bloco
 * Calcular os dígitos verificadores módulo 10
 * Calcular os dígitos verificadores módulo 11
 * Gerar imagem do código de barras em PNG
