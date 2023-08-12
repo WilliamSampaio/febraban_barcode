@@ -25,7 +25,7 @@ def barcode(
     produto: int,
     segmento: int,
     codigo_moeda: int,
-    valor: Decimal,
+    valor: float,
     id_empresa_orgao: str,
     dados_campo_livre: str = '',
     vencimento: date | None = None,
