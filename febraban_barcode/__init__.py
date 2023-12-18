@@ -1,5 +1,4 @@
 from datetime import date
-from decimal import Decimal
 
 from febraban_barcode.modulo10 import digito_verificador_modulo10, modulo10
 from febraban_barcode.modulo11 import digito_verificador_modulo11, modulo11
@@ -33,10 +32,9 @@ def barcode(
     """
     Identificação da Empresa/Órgão:
         4  posições: Código Febraban ou código de compensação
-        8  posições: As primeiras oito posições do cadastro geral de contribuintes do Ministério da Fazenda
-        14 posições: CNPJ da Empresa/Órgão
+        8  posições: (Empresa/Órgão) CNPJ ou primeiras oito posições do cadastro geral de contribuintes do Ministério da Fazenda
     """
-    if id_empresa_orgao is None or len(id_empresa_orgao) not in (4, 8, 14):
+    if id_empresa_orgao is None or len(id_empresa_orgao) not in (4, 8):
         raise Exception(
             'Identificação da Empresa/Órgão não informado ou inválido.'
         )
@@ -65,7 +63,7 @@ def barcode(
         str_vencimento = vencimento.strftime('%Y%m%d')
     else:
         str_vencimento = ''
-    zeros_totais = (21 if len(id_empresa_orgao) == 14 else 25) - len(
+    zeros_totais = (21 if len(id_empresa_orgao) == 8 else 25) - len(
         str_vencimento
     )
 
