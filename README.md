@@ -30,7 +30,6 @@ pip install febraban_barcode
 
 ```python
 from datetime import date
-from decimal import Decimal
 
 from febraban_barcode import (
     MODULO10_VALOR_EFETIVO,
@@ -51,7 +50,7 @@ if __name__ == '__main__':
         produto=PRODUTO_ARRECADACAO,
         segmento=SEGMENTO_PREFEITURA,
         codigo_moeda=MODULO10_VALOR_EFETIVO,
-        valor=Decimal('0.01'),
+        valor=9.99,
         id_empresa_orgao='4321',
         vencimento=date(2023, 7, 29),
         dados_campo_livre='123456789',

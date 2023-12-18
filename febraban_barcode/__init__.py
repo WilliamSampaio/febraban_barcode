@@ -100,17 +100,17 @@ def linha_digitavel(barcode: str) -> str:
 
     codigo_moeda = int(barcode[2])
 
-    modulo = ''
+    modulo = None
     if (
         codigo_moeda == MODULO10_VALOR_EFETIVO
         or codigo_moeda == MODULO10_QUANTIDADE_MOEDA
     ):
-        modulo = 10
+        modulo = modulo10
     elif (
         codigo_moeda == MODULO11_VALOR_EFETIVO
         or codigo_moeda == MODULO11_QUANTIDADE_MOEDA
     ):
-        modulo = 11
+        modulo = modulo11
     else:
         raise Exception('Código moeda inválido.')
 
@@ -119,9 +119,36 @@ def linha_digitavel(barcode: str) -> str:
     partes = [barcode[i : i + 11] for i in range(0, len(barcode), 11)]
 
     for parte in partes:
-        if modulo == 10:
-            str_linha_digitavel += parte + ' ' + str(modulo10(parte)) + '   '
-        else:
-            str_linha_digitavel += parte + ' ' + str(modulo11(parte)) + '   '
+        str_linha_digitavel += parte + ' ' + str(modulo(parte)) + '   '
 
     return str_linha_digitavel.strip()
+
+
+def decode_barcode(barcode: str) -> None:
+    barcode_limpo = ''.join([i for i in barcode.split() if i.isdigit()])
+
+    if barcode_limpo[0] == '8':
+        print(f'Identificação do Produto: (8) Arrecadação.')
+    else:
+        raise Exception('Identificação do Produto inválido.')
+
+    if barcode_limpo[1] == '1':
+        print(f'Identificação do Segmento: (1) Prefeituras.')
+    elif barcode_limpo[1] == '2':
+        print(f'Identificação do Segmento: (2) Saneamento.')
+    elif barcode_limpo[1] == '3':
+        print(f'Identificação do Segmento: (3) Energia Elétrica e Gás.')
+    elif barcode_limpo[1] == '4':
+        print(f'Identificação do Segmento: (4) Telecomunicações.')
+    elif barcode_limpo[1] == '5':
+        print(f'Identificação do Segmento: (5) Órgãos Governamentais.')
+    elif barcode_limpo[1] == '6':
+        print(
+            f'Identificação do Segmento: (6) Carnes e Assemelhados ou demais Empresas.'
+        )
+    elif barcode_limpo[1] == '7':
+        print(f'Identificação do Segmento: (7) Multas de trânsito.')
+    elif barcode_limpo[1] == '9':
+        print(f'Identificação do Segmento: (9) Uso exclusivo do banco.')
+    else:
+        raise Exception('Identificação do Segmento inválido.')
