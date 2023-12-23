@@ -124,31 +124,143 @@ def linha_digitavel(barcode: str) -> str:
     return str_linha_digitavel.strip()
 
 
-def decode_barcode(barcode: str) -> None:
+def decode_barcode(barcode: str, as_dict: bool = False) -> None | dict:
     barcode_limpo = ''.join([i for i in barcode.split() if i.isdigit()])
 
-    if barcode_limpo[0] == '8':
-        print(f'Identificação do Produto: (8) Arrecadação.')
+    dac_blocos = []
+
+    if len(barcode_limpo) == 48:
+        barcode_digitos = [i for i in barcode_limpo]
+        dac_blocos.append(barcode_digitos.pop(47))
+        dac_blocos.append(barcode_digitos.pop(35))
+        dac_blocos.append(barcode_digitos.pop(23))
+        dac_blocos.append(barcode_digitos.pop(11))
+        dac_blocos.reverse()
+        barcode_44 = ''.join(barcode_digitos)
+    elif len(barcode_limpo) == 44:
+        barcode_44 = barcode_limpo
+    else:
+        raise Exception('Código de Barras inválido.')
+
+    barcode_str = 'Código de Barras: '
+    partes = [barcode_44[i : i + 11] for i in range(0, len(barcode_44), 11)]
+    for i in range(len(partes)):
+        dac = ''
+        if len(dac_blocos) > 0:
+            dac = '-' + dac_blocos[i]
+        barcode_str += partes[i] + dac + ' '
+    print(barcode_str)
+
+    barcode_dict = {
+        'identificador_produto': '',
+        'identificador_produto_desc': '',
+        'identificador_segmento': '',
+        'identificador_segmento_desc': '',
+        'identificador_valor_ref': '',
+        'identificador_valor_ref_desc': '',
+        'digito_verificador': '',
+        'digito_verificador_desc': '',
+        'valor_efetivo_referencia': '',
+        'valor_efetivo_referencia_desc': '',
+        'identificador_empresa_orgao': '',
+        'vencimento': '',
+        'campo_livre': '',
+        'valido': False,
+        'erro': '',
+    }
+
+    if int(barcode_44[0]) == PRODUTO_ARRECADACAO:
+        barcode_dict['identificador_produto'] = barcode_44[0]
+        barcode_dict[
+            'identificador_produto_desc'
+        ] = 'Identificação do Produto: (8) Arrecadação.'
     else:
         raise Exception('Identificação do Produto inválido.')
 
-    if barcode_limpo[1] == '1':
-        print(f'Identificação do Segmento: (1) Prefeituras.')
-    elif barcode_limpo[1] == '2':
-        print(f'Identificação do Segmento: (2) Saneamento.')
-    elif barcode_limpo[1] == '3':
-        print(f'Identificação do Segmento: (3) Energia Elétrica e Gás.')
-    elif barcode_limpo[1] == '4':
-        print(f'Identificação do Segmento: (4) Telecomunicações.')
-    elif barcode_limpo[1] == '5':
-        print(f'Identificação do Segmento: (5) Órgãos Governamentais.')
-    elif barcode_limpo[1] == '6':
-        print(
-            f'Identificação do Segmento: (6) Carnes e Assemelhados ou demais Empresas.'
-        )
-    elif barcode_limpo[1] == '7':
-        print(f'Identificação do Segmento: (7) Multas de trânsito.')
-    elif barcode_limpo[1] == '9':
-        print(f'Identificação do Segmento: (9) Uso exclusivo do banco.')
+    if int(barcode_44[1]) == SEGMENTO_PREFEITURA:
+        barcode_dict['identificador_segmento'] = barcode_44[1]
+        barcode_dict[
+            'identificador_segmento_desc'
+        ] = 'Identificação do Segmento: (1) Prefeituras.'
+    elif int(barcode_44[1]) == SEGMENTO_SANEAMENTO:
+        barcode_dict['identificador_segmento'] = barcode_44[1]
+        barcode_dict[
+            'identificador_segmento_desc'
+        ] = 'Identificação do Segmento: (2) Saneamento.'
+    elif int(barcode_44[1]) == SEGMENTO_ENERGIA_ELETRICA_GAS:
+        barcode_dict['identificador_segmento'] = barcode_44[1]
+        barcode_dict[
+            'identificador_segmento_desc'
+        ] = 'Identificação do Segmento: (3) Energia Elétrica e Gás.'
+    elif int(barcode_44[1]) == SEGMENTO_TELECOMUNICACOES:
+        barcode_dict['identificador_segmento'] = barcode_44[1]
+        barcode_dict[
+            'identificador_segmento_desc'
+        ] = 'Identificação do Segmento: (4) Telecomunicações.'
+    elif int(barcode_44[1]) == SEGMENTO_ORGAOS_GOVERNAMENTAIS:
+        barcode_dict['identificador_segmento'] = barcode_44[1]
+        barcode_dict[
+            'identificador_segmento_desc'
+        ] = 'Identificação do Segmento: (5) Órgãos Governamentais.'
+    elif int(barcode_44[1]) == SEGMENTO_DEMAIS:
+        barcode_dict['identificador_segmento'] = barcode_44[1]
+        barcode_dict[
+            'identificador_segmento_desc'
+        ] = 'Identificação do Segmento: (6) Carnes e Assemelhados ou demais Empresas.'
+    elif int(barcode_44[1]) == SEGMENTO_MULTAS_TRANSITO:
+        barcode_dict['identificador_segmento'] = barcode_44[1]
+        barcode_dict[
+            'identificador_segmento_desc'
+        ] = 'Identificação do Segmento: (7) Multas de trânsito.'
+    elif int(barcode_44[1]) == SEGMENTO_EXCLUSIVO_BANCO:
+        barcode_dict['identificador_segmento'] = barcode_44[1]
+        barcode_dict[
+            'identificador_segmento_desc'
+        ] = 'Identificação do Segmento: (9) Uso exclusivo do banco.'
     else:
         raise Exception('Identificação do Segmento inválido.')
+
+    if int(barcode_44[2]) == MODULO10_VALOR_EFETIVO:
+        barcode_dict['identificador_valor_ref'] = barcode_44[2]
+        barcode_dict[
+            'identificador_valor_ref_desc'
+        ] = 'Identificador de Valor Efetivo ou Referência: (6) Valor a ser cobrado efetivamente em reais com dígito verificador calculado pelo módulo 10 na quarta posição do código de barras.'
+    elif int(barcode_44[2]) == MODULO10_QUANTIDADE_MOEDA:
+        barcode_dict['identificador_valor_ref'] = barcode_44[2]
+        barcode_dict[
+            'identificador_valor_ref_desc'
+        ] = 'Identificador de Valor Efetivo ou Referência: (7) Quantidade de moeda\n\tZeros – somente na impossibilidade de utilizar o valor;\n\tValor a ser reajustado por um índice\n\tcom dígito verificador calculado pelo módulo 10 na quarta posição do código de barras.'
+    elif int(barcode_44[2]) == MODULO11_VALOR_EFETIVO:
+        barcode_dict['identificador_valor_ref'] = barcode_44[2]
+        barcode_dict[
+            'identificador_valor_ref_desc'
+        ] = 'Identificador de Valor Efetivo ou Referência: (8) Valor a ser cobrado efetivamente em reais com dígito verificador calculado pelo módulo 11 na quarta posição do código de barras.'
+    elif int(barcode_44[2]) == MODULO11_QUANTIDADE_MOEDA:
+        barcode_dict['identificador_valor_ref'] = barcode_44[2]
+        barcode_dict[
+            'identificador_valor_ref_desc'
+        ] = 'Identificador de Valor Efetivo ou Referência: (9) Quantidade de moeda\n\tZeros – somente na impossibilidade de utilizar o valor;\n\tValor a ser reajustado por um índice\n\tcom dígito verificador calculado pelo módulo 11 na quarta posição do código de barras.'
+    else:
+        raise Exception(
+            'Identificador de Valor Efetivo ou Referência inválido.'
+        )
+
+    valor_efetivo_ref = barcode_44[4:15]
+
+    if int(barcode_44[2]) in (MODULO10_VALOR_EFETIVO, MODULO11_VALOR_EFETIVO):
+        barcode_dict['digito_verificador'] = float(valor_efetivo_ref) / 100
+        barcode_dict['digito_verificador_desc'] = 'Valor Efetivo: R$ ' + str(
+            float(valor_efetivo_ref) / 100
+        ).replace('.', ',')
+    else:
+        barcode_dict['digito_verificador'] = int(valor_efetivo_ref)
+        barcode_dict['digito_verificador_desc'] = 'Valor Referência: ' + str(
+            int(valor_efetivo_ref)
+        )
+
+    if as_dict:
+        return barcode_dict
+
+    for key, desc in barcode_dict.items():
+        if '_desc' in key:
+            print(desc)
