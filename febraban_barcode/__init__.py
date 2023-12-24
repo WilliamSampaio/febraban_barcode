@@ -1,23 +1,24 @@
-from datetime import date
+from datetime import date, datetime
 
-from febraban_barcode.modulo10 import digito_verificador_modulo10, modulo10
-from febraban_barcode.modulo11 import digito_verificador_modulo11, modulo11
+from febraban_barcode.functions import clear_barcode, dac_func
 
-PRODUTO_ARRECADACAO = 8
-
-SEGMENTO_PREFEITURA = 1
-SEGMENTO_SANEAMENTO = 2
-SEGMENTO_ENERGIA_ELETRICA_GAS = 3
-SEGMENTO_TELECOMUNICACOES = 4
-SEGMENTO_ORGAOS_GOVERNAMENTAIS = 5
-SEGMENTO_DEMAIS = 6
-SEGMENTO_MULTAS_TRANSITO = 7
-SEGMENTO_EXCLUSIVO_BANCO = 9
-
-MODULO10_VALOR_EFETIVO = 6
-MODULO10_QUANTIDADE_MOEDA = 7
-MODULO11_VALOR_EFETIVO = 8
-MODULO11_QUANTIDADE_MOEDA = 9
+from .constants import (
+    MODULO10_QUANTIDADE_MOEDA,
+    MODULO10_VALOR_EFETIVO,
+    MODULO11_QUANTIDADE_MOEDA,
+    MODULO11_VALOR_EFETIVO,
+    PRODUTO_ARRECADACAO,
+    SEGMENTO_DEMAIS,
+    SEGMENTO_ENERGIA_ELETRICA_GAS,
+    SEGMENTO_EXCLUSIVO_BANCO,
+    SEGMENTO_MULTAS_TRANSITO,
+    SEGMENTO_ORGAOS_GOVERNAMENTAIS,
+    SEGMENTO_PREFEITURA,
+    SEGMENTO_SANEAMENTO,
+    SEGMENTO_TELECOMUNICACOES,
+)
+from .modulo10 import digito_verificador_modulo10
+from .modulo11 import digito_verificador_modulo11
 
 
 def barcode(
@@ -95,28 +96,20 @@ def barcode(
 
 
 def linha_digitavel(barcode: str) -> str:
-    if len(barcode) != 44:
+    barcode_limpo = clear_barcode(barcode)
+    if len(barcode_limpo) != 44:
         raise Exception('Código de barra inválido.')
 
-    codigo_moeda = int(barcode[2])
-
-    modulo = None
-    if (
-        codigo_moeda == MODULO10_VALOR_EFETIVO
-        or codigo_moeda == MODULO10_QUANTIDADE_MOEDA
-    ):
-        modulo = modulo10
-    elif (
-        codigo_moeda == MODULO11_VALOR_EFETIVO
-        or codigo_moeda == MODULO11_QUANTIDADE_MOEDA
-    ):
-        modulo = modulo11
-    else:
+    codigo_moeda = int(barcode_limpo[2])
+    modulo = dac_func(codigo_moeda)
+    if modulo is None:
         raise Exception('Código moeda inválido.')
 
     str_linha_digitavel = ''
 
-    partes = [barcode[i : i + 11] for i in range(0, len(barcode), 11)]
+    partes = [
+        barcode_limpo[i : i + 11] for i in range(0, len(barcode_limpo), 11)
+    ]
 
     for parte in partes:
         str_linha_digitavel += parte + ' ' + str(modulo(parte)) + '   '
@@ -125,7 +118,7 @@ def linha_digitavel(barcode: str) -> str:
 
 
 def decode_barcode(barcode: str, as_dict: bool = False) -> None | dict:
-    barcode_limpo = ''.join([i for i in barcode.split() if i.isdigit()])
+    barcode_limpo = clear_barcode(barcode)
 
     dac_blocos = []
 
@@ -142,16 +135,11 @@ def decode_barcode(barcode: str, as_dict: bool = False) -> None | dict:
     else:
         raise Exception('Código de Barras inválido.')
 
-    barcode_str = 'Código de Barras: '
-    partes = [barcode_44[i : i + 11] for i in range(0, len(barcode_44), 11)]
-    for i in range(len(partes)):
-        dac = ''
-        if len(dac_blocos) > 0:
-            dac = '-' + dac_blocos[i]
-        barcode_str += partes[i] + dac + ' '
-    print(barcode_str)
+    modulo = dac_func(barcode_44[2])
 
     barcode_dict = {
+        'barcode_44': barcode_44,
+        'barcode_desc': barcode_44,
         'identificador_produto': '',
         'identificador_produto_desc': '',
         'identificador_segmento': '',
@@ -163,11 +151,23 @@ def decode_barcode(barcode: str, as_dict: bool = False) -> None | dict:
         'valor_efetivo_referencia': '',
         'valor_efetivo_referencia_desc': '',
         'identificador_empresa_orgao': '',
-        'vencimento': '',
+        'identificador_empresa_orgao_desc': '',
+        'vencimento': None,
+        'vencimento_desc': '',
         'campo_livre': '',
-        'valido': False,
-        'erro': '',
+        'campo_livre_desc': '',
+        'valido': True,
+        'erro': [],
     }
+
+    barcode_str = 'Código de Barras: '
+    partes = [barcode_44[i : i + 11] for i in range(0, len(barcode_44), 11)]
+    for i in range(len(partes)):
+        dac = ''
+        if len(dac_blocos) > 0:
+            dac = '-' + dac_blocos[i]
+        barcode_str += partes[i] + dac + ' '
+    barcode_dict['barcode_desc'] = barcode_str
 
     if int(barcode_44[0]) == PRODUTO_ARRECADACAO:
         barcode_dict['identificador_produto'] = barcode_44[0]
@@ -245,22 +245,93 @@ def decode_barcode(barcode: str, as_dict: bool = False) -> None | dict:
             'Identificador de Valor Efetivo ou Referência inválido.'
         )
 
+    digito_verificador_geral = barcode_44[3]
+    barcode_dict['digito_verificador'] = digito_verificador_geral
+    barcode_dict['digito_verificador_desc'] = (
+        'Dígito verificador geral (módulo 10 ou 11): '
+        + digito_verificador_geral
+    )
+
+    dac = modulo(barcode_44[0:3] + barcode_44[4:44])
+    if dac != int(digito_verificador_geral):
+        barcode_dict['erro'].append('Erro: Dígito verificador geral inválido.')
+        barcode_dict['valido'] = False
+
     valor_efetivo_ref = barcode_44[4:15]
 
     if int(barcode_44[2]) in (MODULO10_VALOR_EFETIVO, MODULO11_VALOR_EFETIVO):
-        barcode_dict['digito_verificador'] = float(valor_efetivo_ref) / 100
-        barcode_dict['digito_verificador_desc'] = 'Valor Efetivo: R$ ' + str(
+        barcode_dict['valor_efetivo_referencia'] = (
             float(valor_efetivo_ref) / 100
-        ).replace('.', ',')
+        )
+        barcode_dict[
+            'valor_efetivo_referencia_desc'
+        ] = 'Valor Efetivo: R$ ' + str(float(valor_efetivo_ref) / 100).replace(
+            '.', ','
+        )
     else:
-        barcode_dict['digito_verificador'] = int(valor_efetivo_ref)
-        barcode_dict['digito_verificador_desc'] = 'Valor Referência: ' + str(
-            int(valor_efetivo_ref)
+        barcode_dict['valor_efetivo_referencia'] = int(valor_efetivo_ref)
+        barcode_dict[
+            'valor_efetivo_referencia_desc'
+        ] = 'Valor Referência: ' + str(int(valor_efetivo_ref))
+
+    identificador_empresa = barcode_44[15:19]
+    barcode_dict['identificador_empresa_orgao'] = identificador_empresa
+
+    if int(barcode_44[1]) == SEGMENTO_EXCLUSIVO_BANCO:
+        barcode_dict['identificador_empresa_orgao_desc'] = (
+            'Identificação da Empresa/Órgão: '
+            + identificador_empresa
+            + ' código de compensação.'
+        )
+    else:
+        barcode_dict['identificador_empresa_orgao_desc'] = (
+            'Identificação da Empresa/Órgão: '
+            + identificador_empresa
+            + ' código de Febraban.'
         )
 
+    campo_livre = barcode_44[19:44]
+
+    try:
+        vencimento = datetime.strptime(campo_livre[0:8], '%Y%m%d')
+        barcode_dict['vencimento'] = vencimento.strftime('%Y-%m-%d')
+        barcode_dict[
+            'vencimento_desc'
+        ] = 'Data de Vencimento: ' + vencimento.strftime('%d/%m/%Y')
+    except:
+        barcode_dict['vencimento_desc'] = 'Data de Vencimento: Não informado.'
+
+    barcode_dict['campo_livre'] = campo_livre
+    barcode_dict['campo_livre_desc'] = (
+        'Campo Livre (25 posições): ' + campo_livre
+    )
+
+    partes = [barcode_44[i : i + 11] for i in range(0, len(barcode_44), 11)]
+
+    if len(barcode_limpo) == 48:
+        for i in range(len(partes)):
+            if modulo(partes[i]) != int(dac_blocos[i]):
+                barcode_dict['erro'].append(
+                    'Erro: DAC (Dígito de Auto-Conferência) do bloco '
+                    + str(i + 1)
+                    + ' inválido.'
+                )
+                barcode_dict['valido'] = False
+
     if as_dict:
-        return barcode_dict
+        return {
+            key: value
+            for (key, value) in barcode_dict.items()
+            if '_desc' not in key
+        }
 
     for key, desc in barcode_dict.items():
         if '_desc' in key:
             print(desc)
+
+    if not barcode_dict['valido']:
+        print('STATUS: Inválido.')
+        for erro in barcode_dict['erro']:
+            print(' -> ' + erro)
+    else:
+        print('STATUS: Válido.')
