@@ -2,7 +2,6 @@ from datetime import datetime
 
 
 def registro_A(
-    codigo_registro='A',
     codigo_remessa='2',
     codigo_convenio=' ',
     nome_empresa=' ',
@@ -12,13 +11,12 @@ def registro_A(
     nsa='0',
     versao_layout='05',
     servico='CODIGO DE BARRAS',
-    reservado=' ',
+    reservado='',
 ):
     """
     REGISTRO “A” – HEADER
 
     Args:
-        codigo_registro (str, optional): A.01 - Código do registro = “A”. Defaults to 'A'.
         codigo_remessa (str, optional): A.02 - Código de Remessa
             2 - RETORNO - Enviado pelo Banco para a Empresa/Órgão. Defaults to '2'.
         codigo_convenio (str, optional): A.03 - Código do Convênio
@@ -43,29 +41,25 @@ def registro_A(
     Returns:
         str: Retorna o header com 150bytes.
     """
-    header_str = ''
-
-    if len(codigo_registro) != 1:
-        raise Exception('Campo A.01 Inválido. O campo deve ter o tamanho 1.')
-    header_str += codigo_registro
+    registro_a = 'A'
 
     if len(codigo_remessa) != 1:
         raise Exception('Campo A.02 Inválido. O campo deve ter o tamanho 1.')
     if not codigo_remessa.isdigit():
         raise Exception('Campo A.02 Inválido. O campo deve ser numérico.')
-    header_str += codigo_remessa
+    registro_a += codigo_remessa
 
     if len(codigo_convenio) > 20:
         raise Exception(
             'Campo A.03 Inválido. O campo deve ter o tamanho máximo de 20.'
         )
-    header_str += codigo_convenio.ljust(20)
+    registro_a += codigo_convenio.ljust(20)
 
     if len(nome_empresa) > 20:
         raise Exception(
             'Campo A.04 Inválido. O campo deve ter o tamanho máximo de 20.'
         )
-    header_str += nome_empresa.ljust(20)
+    registro_a += nome_empresa.ljust(20)
 
     if len(codigo_banco) > 3:
         raise Exception(
@@ -73,13 +67,13 @@ def registro_A(
         )
     if not codigo_banco.isdigit():
         raise Exception('Campo A.05 Inválido. O campo deve ser numérico.')
-    header_str += codigo_banco.zfill(3)
+    registro_a += codigo_banco.zfill(3)
 
     if len(nome_banco) > 20:
         raise Exception(
             'Campo A.06 Inválido. O campo deve ter o tamanho máximo de 20.'
         )
-    header_str += nome_banco.upper().ljust(20)
+    registro_a += nome_banco.upper().ljust(20)
 
     try:
         datetime.strptime(data_geracao, '%Y%m%d')
@@ -87,7 +81,7 @@ def registro_A(
         raise Exception(
             'Campo A.07 Inválido. O campo deve ser uma data no formato AAAAMMDD.'
         )
-    header_str += data_geracao
+    registro_a += data_geracao
 
     if len(nsa) > 6:
         raise Exception(
@@ -95,7 +89,7 @@ def registro_A(
         )
     if not nsa.isdigit():
         raise Exception('Campo A.08 Inválido. O campo deve ser numérico.')
-    header_str += nsa.zfill(6)
+    registro_a += nsa.zfill(6)
 
     if len(versao_layout) > 2:
         raise Exception(
@@ -103,24 +97,23 @@ def registro_A(
         )
     if not versao_layout.isdigit():
         raise Exception('Campo A.09 Inválido. O campo deve ser numérico.')
-    header_str += versao_layout.zfill(2)
+    registro_a += versao_layout.zfill(2)
 
     if len(servico) > 17:
         raise Exception(
             'Campo A.10 Inválido. O campo deve ter o tamanho máximo de 17.'
         )
-    header_str += servico.upper().ljust(17)
+    registro_a += servico.upper().ljust(17)
 
     if len(reservado) > 52:
         raise Exception(
             'Campo A.11 Inválido. O campo deve ter o tamanho máximo de 52.'
         )
-    header_str += reservado.upper().ljust(52)
-    return header_str
+    registro_a += reservado.upper().ljust(52)
+    return registro_a
 
 
 def registro_G(
-    codigo_registro='G',
     codigo_banco='0',
     agencia='0',
     conta='0',
@@ -135,13 +128,12 @@ def registro_G(
     forma_arrecadacao=' ',
     autenticacao=' ',
     forma_pagamento='0',
-    reservado=' ',
+    reservado='',
 ):
     """
     REGISTRO “G” – RETORNO DAS ARRECADAÇÕES IDENTIFICADAS COM CÓDIGO DE BARRAS
 
     Args:
-        codigo_registro (str, optional): G.01 - Código do registro = “G”. Defaults to 'G'.
         codigo_banco (str, optional): G.02 - Identificação do banco da empresa/órgão creditada. Defaults to '0'.
         agencia (str, optional): G.02 - Identificação da agência da empresa/órgão creditada. Defaults to '0'.
         conta (str, optional): G.02 - Identificação da conta da empresa/órgão creditada. Defaults to '0'.
@@ -181,11 +173,7 @@ def registro_G(
     Returns:
         str: Retorna um registro com 150bytes.
     """
-    registro = ''
-
-    if len(codigo_registro) != 1:
-        raise Exception('Campo G.01 Inválido. O campo deve ter o tamanho 1.')
-    registro += codigo_registro
+    registro_g = 'G'
 
     if len(codigo_banco) > 3:
         raise Exception(
@@ -195,7 +183,7 @@ def registro_G(
         raise Exception(
             'Campo G.02 Inválido. O campo codigo_banco deve ser numérico.'
         )
-    registro += codigo_banco.zfill(3)
+    registro_g += codigo_banco.zfill(3)
 
     if not agencia.isdigit():
         raise Exception(
@@ -217,7 +205,7 @@ def registro_G(
         raise Exception(
             'Campo G.02 Inválido. Os campos agencia, conta e conta_digito juntos devem ter tamanho máximo de 17.'
         )
-    registro += agencia_conta.zfill(17)
+    registro_g += agencia_conta.zfill(17)
 
     try:
         datetime.strptime(data_pagamento, '%Y%m%d')
@@ -225,7 +213,7 @@ def registro_G(
         raise Exception(
             'Campo G.03 Inválido. O campo deve ser uma data no formato AAAAMMDD.'
         )
-    registro += data_pagamento
+    registro_g += data_pagamento
 
     try:
         datetime.strptime(data_credito, '%Y%m%d')
@@ -233,41 +221,41 @@ def registro_G(
         raise Exception(
             'Campo G.04 Inválido. O campo deve ser uma data no formato AAAAMMDD.'
         )
-    registro += data_credito
+    registro_g += data_credito
 
     if len(barcode_44) != 44:
         raise Exception(
             'Campo G.05 Inválido. O campo deve ser um código de barras de 44 posições.'
         )
-    registro += barcode_44
+    registro_g += barcode_44
 
     if not isinstance(valor_recebido, float):
         raise Exception('Campo G.06 Inválido. O campo deve ser um float.')
-    registro += str(int(valor_recebido * 100)).zfill(12)
+    registro_g += str(int(valor_recebido * 100)).zfill(12)
 
     if not isinstance(valor_tarifa, float):
         raise Exception('Campo G.07 Inválido. O campo deve ser um float.')
-    registro += str(int(valor_tarifa * 100)).zfill(7)
+    registro_g += str(int(valor_tarifa * 100)).zfill(7)
 
     if not isinstance(nsr, int):
         raise Exception('Campo G.08 Inválido. O campo deve ser um int.')
-    registro += str(nsr).zfill(8)
+    registro_g += str(nsr).zfill(8)
 
     if len(codigo_agencia) > 8:
         raise Exception(
             'Campo G.09 Inválido. O campo deve ter o tamanho máximo de 8.'
         )
-    registro += codigo_agencia.ljust(8)
+    registro_g += codigo_agencia.ljust(8)
 
     if len(forma_arrecadacao) > 1:
         raise Exception('Campo G.10 Inválido. O campo deve ter o tamanho 1.')
-    registro += forma_arrecadacao.ljust(1)
+    registro_g += forma_arrecadacao.ljust(1)
 
     if len(autenticacao) > 23:
         raise Exception(
             'Campo G.11 Inválido. O campo deve ter o tamanho máximo de 23.'
         )
-    registro += autenticacao.ljust(23)
+    registro_g += autenticacao.ljust(23)
 
     if len(forma_pagamento) > 1:
         raise Exception(
@@ -275,11 +263,12 @@ def registro_G(
         )
     if not forma_pagamento.isdigit():
         raise Exception('Campo G.12 Inválido. O campo deve ser numérico.')
-    registro += forma_pagamento.zfill(1)
+    registro_g += forma_pagamento.zfill(1)
 
     if len(reservado) > 9:
         raise Exception(
             'Campo G.13 Inválido. O campo deve ter o tamanho máximo de 9.'
         )
-    registro += reservado.upper().ljust(9)
-    return registro
+    registro_g += reservado.upper().ljust(9)
+    return registro_g
+
