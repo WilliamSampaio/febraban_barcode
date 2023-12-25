@@ -117,3 +117,169 @@ def registro_A(
         )
     header_str += reservado.upper().ljust(52)
     return header_str
+
+
+def registro_G(
+    codigo_registro='G',
+    codigo_banco='0',
+    agencia='0',
+    conta='0',
+    conta_digito='0',
+    data_pagamento='',
+    data_credito='',
+    barcode_44=' ',
+    valor_recebido=0.0,
+    valor_tarifa=0.0,
+    nsr=None,
+    codigo_agencia=' ',
+    forma_arrecadacao=' ',
+    autenticacao=' ',
+    forma_pagamento='0',
+    reservado=' ',
+):
+    """
+    REGISTRO “G” – RETORNO DAS ARRECADAÇÕES IDENTIFICADAS COM CÓDIGO DE BARRAS
+
+    Args:
+        codigo_registro (str, optional): G.01 - Código do registro = “G”. Defaults to 'G'.
+        codigo_banco (str, optional): G.02 - Identificação do banco da empresa/órgão creditada. Defaults to '0'.
+        agencia (str, optional): G.02 - Identificação da agência da empresa/órgão creditada. Defaults to '0'.
+        conta (str, optional): G.02 - Identificação da conta da empresa/órgão creditada. Defaults to '0'.
+        conta_digito (str, optional): G.02 - Identificação do dígito da conta da empresa/órgão creditada. Defaults to '0'.
+        data_pagamento (str, optional): G.03 - Data de pagamento (AAAA/MM/DD). Defaults to ''.
+        data_credito (str, optional): G.04 - Data de crédito (AAAA/MM/DD). Defaults to ''.
+        barcode_44 (str, optional): G.05 - Código de Barras (44 posições). Defaults to ' '.
+        valor_recebido (float, optional): G.06 - Valor recebido. Defaults to 0.0.
+        valor_tarifa (float, optional): G.07 - Valor da tarifa referente a cada comprovante arrecadado (será informado desde que acordado entre as partes). Defaults to 0.0.
+        nsr (_type_, optional): G.08 - NSR - Número Seqüencial de Registro. Defaults to None.
+        codigo_agencia (str, optional): G.09 - Código da agência arrecadadora. Defaults to ' '.
+        forma_arrecadacao (str, optional): G.10 – Forma de arrecadação/captura (canais de recebimento)
+            1 – Guichê de Caixa com fatura/guia de arrecadação
+            2 – Arrecadação Eletrônica com fatura/guia de arrecadação (terminais de auto - atendimento, ATM, home/office banking)
+            3 – Internet com fatura/guia de arrecadação
+            4 – Outros meios com fatura/guia de arrecadação
+            5 – Correspondentes bancários com fatura/guia de arrecadação
+            6 – Telefone com fatura/guia de arrecadação
+            7 – Casas lotéricas com fatura/guia de arrecadação
+            a – Guichê de Caixa sem fatura/guia de arrecadação
+            b – Arrecadação Eletrônica sem fatura/guia de arrecadação (terminais de auto - atendimento, ATM, home/office banking)
+            c – Internet sem fatura/guia de arrecadação
+            d – Correspondentes bancários sem fatura/guia de arrecadação
+            e – Telefone sem fatura/guia de arrecadação
+            f – Outros meios sem fatura/guia de arrecadação
+            g – Casas lotéricas sem fatura/guia de arrecadação. Defaults to ' '.
+        autenticacao (str, optional): G.11 – Número de autenticação caixa ou código de transação (será informado desde que acordado entre as partes). Defaults to ' '.
+        forma_pagamento (str, optional): G.12 – Forma de Pagamento
+            1 – Dinheiro
+            2 – Cheque
+            3 – Não identificado/outras formas. Defaults to '0'.
+        reservado (str, optional): G.13 – Reservado para o futuro. Defaults to ' '.
+
+    Raises:
+        Exception: Campo inválido.
+
+    Returns:
+        str: Retorna um registro com 150bytes.
+    """
+    registro = ''
+
+    if len(codigo_registro) != 1:
+        raise Exception('Campo G.01 Inválido. O campo deve ter o tamanho 1.')
+    registro += codigo_registro
+
+    if len(codigo_banco) > 3:
+        raise Exception(
+            'Campo G.02 Inválido. O campo deve ter o tamanho máximo de 3.'
+        )
+    if not codigo_banco.isdigit():
+        raise Exception(
+            'Campo G.02 Inválido. O campo codigo_banco deve ser numérico.'
+        )
+    registro += codigo_banco.zfill(3)
+
+    if not agencia.isdigit():
+        raise Exception(
+            'Campo G.02 Inválido. O campo agencia deve ser numérico.'
+        )
+
+    if not conta.isdigit():
+        raise Exception(
+            'Campo G.02 Inválido. O campo conta deve ser numérico.'
+        )
+
+    if not conta_digito.isdigit():
+        raise Exception(
+            'Campo G.02 Inválido. O campo conta_digito deve ser numérico.'
+        )
+
+    agencia_conta = agencia + conta + conta_digito
+    if len(agencia_conta) > 17:
+        raise Exception(
+            'Campo G.02 Inválido. Os campos agencia, conta e conta_digito juntos devem ter tamanho máximo de 17.'
+        )
+    registro += agencia_conta.zfill(17)
+
+    try:
+        datetime.strptime(data_pagamento, '%Y%m%d')
+    except:
+        raise Exception(
+            'Campo G.03 Inválido. O campo deve ser uma data no formato AAAAMMDD.'
+        )
+    registro += data_pagamento
+
+    try:
+        datetime.strptime(data_credito, '%Y%m%d')
+    except:
+        raise Exception(
+            'Campo G.04 Inválido. O campo deve ser uma data no formato AAAAMMDD.'
+        )
+    registro += data_credito
+
+    if len(barcode_44) != 44:
+        raise Exception(
+            'Campo G.05 Inválido. O campo deve ser um código de barras de 44 posições.'
+        )
+    registro += barcode_44
+
+    if not isinstance(valor_recebido, float):
+        raise Exception('Campo G.06 Inválido. O campo deve ser um float.')
+    registro += str(int(valor_recebido * 100)).zfill(12)
+
+    if not isinstance(valor_tarifa, float):
+        raise Exception('Campo G.07 Inválido. O campo deve ser um float.')
+    registro += str(int(valor_tarifa * 100)).zfill(7)
+
+    if not isinstance(nsr, int):
+        raise Exception('Campo G.08 Inválido. O campo deve ser um int.')
+    registro += str(nsr).zfill(8)
+
+    if len(codigo_agencia) > 8:
+        raise Exception(
+            'Campo G.09 Inválido. O campo deve ter o tamanho máximo de 8.'
+        )
+    registro += codigo_agencia.ljust(8)
+
+    if len(forma_arrecadacao) > 1:
+        raise Exception('Campo G.10 Inválido. O campo deve ter o tamanho 1.')
+    registro += forma_arrecadacao.ljust(1)
+
+    if len(autenticacao) > 23:
+        raise Exception(
+            'Campo G.11 Inválido. O campo deve ter o tamanho máximo de 23.'
+        )
+    registro += autenticacao.ljust(23)
+
+    if len(forma_pagamento) > 1:
+        raise Exception(
+            'Campo G.12 Inválido. O campo deve ter o tamanho máximo de 1.'
+        )
+    if not forma_pagamento.isdigit():
+        raise Exception('Campo G.12 Inválido. O campo deve ser numérico.')
+    registro += forma_pagamento.zfill(1)
+
+    if len(reservado) > 9:
+        raise Exception(
+            'Campo G.13 Inválido. O campo deve ter o tamanho máximo de 9.'
+        )
+    registro += reservado.upper().ljust(9)
+    return registro
