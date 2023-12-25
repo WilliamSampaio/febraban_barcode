@@ -272,3 +272,36 @@ def registro_G(
     registro_g += reservado.upper().ljust(9)
     return registro_g
 
+
+def registro_Z(total_registros=0, valor_total_registros=0.0, reservado=''):
+    """
+    REGISTRO “Z” - TRAILLER
+
+    Args:
+        total_registros (int, optional): Z.02 - Total de registros no arquivo
+            Total de registros no arquivo, inclusive com header e trailler. Defaults to 0.
+        valor_total_registros (float, optional): Z.03 - Valor total dos registros do arquivo. Defaults to 0.0.
+        reservado (str, optional): Z.04 - Reservado para o futuro (filler). Defaults to ''.
+
+    Raises:
+        Exception: Campo inválido.
+
+    Returns:
+        str: Retorna um registro com 150bytes.
+    """
+    registro_z = 'Z'
+
+    if not isinstance(total_registros, int):
+        raise Exception('Campo Z.02 Inválido. O campo deve ser um int.')
+    registro_z += str(total_registros).zfill(6)
+
+    if not isinstance(valor_total_registros, float):
+        raise Exception('Campo Z.03 Inválido. O campo deve ser um float.')
+    registro_z += str(int(valor_total_registros * 100)).zfill(17)
+
+    if len(reservado) > 126:
+        raise Exception(
+            'Campo Z.04 Inválido. O campo deve ter o tamanho máximo de 126.'
+        )
+    registro_z += reservado.upper().ljust(126)
+    return registro_z
