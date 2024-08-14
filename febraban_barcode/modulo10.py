@@ -1,22 +1,24 @@
 def modulo10(sequencia) -> int:
     """
     O DAC (Dígito de Auto-Conferência) módulo 10, de um número é calculado
-    multiplicando cada algarismo, pela seqüência de multiplicadores 2, 1, 2, 1, ...
-    posicionados da direita para a esquerda.
+    multiplicando cada algarismo, pela seqüência de multiplicadores 2, 1,
+    2, 1, ... posicionados da direita para a esquerda.
 
     A soma dos algarismos do produto é dividida por 10 e o DAC será a diferença
     entre o divisor (10) e o resto da divisão:
 
         DAC = 10 - (resto da divisão)
 
-    Observação: quando o resto da divisão for 0 (zero), o DAC calculado é o 0 (zero).
+    Observação: quando o resto da divisão for 0 (zero), o DAC calculado é o
+    0 (zero).
 
     EXEMPLO
 
     Calcular o DAC módulo 10 da seguinte seqüência de números: 01230067896.
     A fórmula do cálculo é:
 
-        1. Multiplicação pela sequência 2, 1, 2, 1, ... da direita para a esquerda.
+        1. Multiplicação pela sequência 2, 1, 2, 1, ... da direita para a
+        esquerda.
               0  1  2  3  0  0  6  7  8  9  6
             X 2  1  2  1  2  1  2  1  2  1  2
               0  1  4  3  0  0 12  7 16  9 12

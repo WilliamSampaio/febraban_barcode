@@ -1,24 +1,27 @@
 [tool.poetry]
-name = "febraban-barcode"
-version = "0.2.0"
-description = "Implementação em python do layout padrão de arrecadação/recebimento com utilização do código de barras da Febraban."
 authors = ["William Sampaio <1997wbms@gmail.com>"]
+description = "Implementação em python do layout padrão de arrecadação/recebimento com utilização do código de barras da Febraban."
 license = "MIT"
+name = "febraban-barcode"
+packages = [{include = "febraban_barcode"}]
 readme = "README.md"
-packages = [{ include = "febraban_barcode" }]
+version = "0.2.0"
 
 [tool.poetry.urls]
-"Documentação" = "https://febraban-barcode.readthedocs.io/"
 "Código" = "https://github.com/WilliamSampaio/febraban_barcode"
+"Documentação" = "https://febraban-barcode.readthedocs.io/"
 
 [tool.poetry.dependencies]
+pillow = "^10.0.0"
 python = "^3.11"
 python-barcode = "^0.15.1"
-pillow = "^10.0.0"
 
 [tool.poetry.group.dev.dependencies]
-isort = "^5.12.0"
 blue = "^0.9.1"
+isort = "^5.12.0"
+pytest = "^8.3.2"
+pytest-cov = "^5.0.0"
+taskipy = "^1.13.0"
 tinydb = "^4.8.0"
 
 [tool.poetry.group.doc.dependencies]
@@ -27,5 +30,9 @@ mkdocstrings = "^0.22.0"
 mkdocstrings-python = "^1.2.1"
 
 [build-system]
-requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.taskipy.tasks]
+lint = "isort . && blue ."
+test = "pytest --cov=febraban_barcode --cov-report=html tests/"
