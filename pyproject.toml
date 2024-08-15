@@ -12,7 +12,6 @@ version = "0.2.0"
 "Documentação" = "https://febraban-barcode.readthedocs.io/"
 
 [tool.poetry.dependencies]
-mkdocs = "^1.6.0"
 pillow = "^10.0.0"
 python = "^3.11"
 python-barcode = "^0.15.1"
@@ -26,7 +25,6 @@ taskipy = "^1.13.0"
 tinydb = "^4.8.0"
 
 [tool.poetry.group.doc.dependencies]
-mkdocs = "^1.6.0"
 mkdocs-material = "^9.1.21"
 mkdocstrings = "^0.22.0"
 mkdocstrings-python = "^1.2.1"
