@@ -21,7 +21,6 @@ blue = "^0.9.1"
 isort = "^5.12.0"
 pytest = "^8.3.2"
 pytest-cov = "^5.0.0"
-python-coveralls = "^2.9.3"
 taskipy = "^1.13.0"
 tinydb = "^4.8.0"
 

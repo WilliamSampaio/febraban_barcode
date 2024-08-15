@@ -1,0 +1,10 @@
+name: "Febraban Barcode Pipeline"
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hello World!
+        run: echo "Hello $USER!"
