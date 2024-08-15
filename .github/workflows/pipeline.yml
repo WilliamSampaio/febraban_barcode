@@ -12,3 +12,6 @@ jobs:
         with:
           python-version: '3.11'
       - run: echo $(python -V)
+
+      - run: pip install poetry
+      - run: poetry install
