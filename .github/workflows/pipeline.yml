@@ -15,7 +15,7 @@ jobs:
 
       - run: pip install poetry
       - run: poetry install --without doc
-      - run: poetry run pytest --cov --junitxml=junit.xml
+      - run: poetry run pytest --cov
       - uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # required
