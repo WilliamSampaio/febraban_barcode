@@ -35,4 +35,4 @@ requires = ["poetry-core"]
 
 [tool.taskipy.tasks]
 lint = "isort . && blue ."
-test = "pytest -x -v -s --ff --cov=febraban_barcode --cov-report=html tests/"
+test = "pytest -x -v --ff --cov=febraban_barcode --cov-report=html tests/"

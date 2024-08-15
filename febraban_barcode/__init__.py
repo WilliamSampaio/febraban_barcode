@@ -207,8 +207,7 @@ def decode_barcode(barcode: str, as_dict: bool = False) -> None | dict:
         barcode_dict['identificador_segmento'] = barcode_44[1]
         barcode_dict[
             'identificador_segmento_desc'
-        ] = 'Identificação do Segmento: (6) Carnes e Assemelhados ou demais '
-        +'Empresas.'
+        ] = 'Identificação do Segmento: (6) Carnes e Assemelhados ou demais Empresas.'
     elif int(barcode_44[1]) == SEGMENTO_MULTAS_TRANSITO:
         barcode_dict['identificador_segmento'] = barcode_44[1]
         barcode_dict[
@@ -226,33 +225,22 @@ def decode_barcode(barcode: str, as_dict: bool = False) -> None | dict:
         barcode_dict['identificador_valor_ref'] = barcode_44[2]
         barcode_dict[
             'identificador_valor_ref_desc'
-        ] = 'Identificador de Valor Efetivo ou Referência: (6) Valor a ser '
-        +'cobrado efetivamente em reais com dígito verificador calculado '
-        +'pelo módulo 10 na quarta posição do código de barras.'
+        ] = 'Identificador de Valor Efetivo ou Referência: (6) Valor a ser cobrado efetivamente em reais com dígito verificador calculado pelo módulo 10 na quarta posição do código de barras.'
     elif int(barcode_44[2]) == MODULO10_QUANTIDADE_MOEDA:
         barcode_dict['identificador_valor_ref'] = barcode_44[2]
         barcode_dict[
             'identificador_valor_ref_desc'
-        ] = 'Identificador de Valor Efetivo ou Referência: (7) Quantidade de '
-        +'moeda\n\tZeros – somente na impossibilidade de utilizar o '
-        +'valor;\n\tValor a ser reajustado por um índice\n\tcom dígito '
-        +'verificador calculado pelo módulo 10 na quarta posição do código '
-        +'de barras.'
+        ] = 'Identificador de Valor Efetivo ou Referência: (7) Quantidade de moeda\n\tZeros – somente na impossibilidade de utilizar o valor;\n\tValor a ser reajustado por um índice\n\tcom dígito verificador calculado pelo módulo 10 na quarta posição do código de barras.'
     elif int(barcode_44[2]) == MODULO11_VALOR_EFETIVO:
         barcode_dict['identificador_valor_ref'] = barcode_44[2]
         barcode_dict[
             'identificador_valor_ref_desc'
-        ] = 'Identificador de Valor Efetivo ou Referência: (8) Valor a ser '
-        +'cobrado efetivamente em reais com dígito verificador calculado '
-        +'pelo módulo 11 na quarta posição do código de barras.'
+        ] = 'Identificador de Valor Efetivo ou Referência: (8) Valor a ser cobrado efetivamente em reais com dígito verificador calculado pelo módulo 11 na quarta posição do código de barras.'
     elif int(barcode_44[2]) == MODULO11_QUANTIDADE_MOEDA:
         barcode_dict['identificador_valor_ref'] = barcode_44[2]
         barcode_dict[
             'identificador_valor_ref_desc'
-        ] = 'Identificador de Valor Efetivo ou Referência: (9) Quantidade de '
-        +'moeda\n\tZeros – somente na impossibilidade de utilizar o valor; '
-        +'\n\tValor a ser reajustado por um índice\n\tcom dígito verificador '
-        +'calculado pelo módulo 11 na quarta posição do código de barras.'
+        ] = 'Identificador de Valor Efetivo ou Referência: (9) Quantidade de moeda\n\tZeros – somente na impossibilidade de utilizar o valor; \n\tValor a ser reajustado por um índice\n\tcom dígito verificador calculado pelo módulo 11 na quarta posição do código de barras.'
     else:
         raise Exception(
             'Identificador de Valor Efetivo ou Referência inválido.'
