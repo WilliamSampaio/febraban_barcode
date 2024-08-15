@@ -1,10 +1,11 @@
 # Febraban Barcode
 
-[![Documentation Status](https://readthedocs.org/projects/febraban-barcode/badge/?version=stable)](https://febraban-barcode.readthedocs.io/pt_BR/stable/?badge=stable)
-[![codecov](https://codecov.io/gh/WilliamSampaio/febraban_barcode/graph/badge.svg?token=7E3X541UUR)](https://codecov.io/gh/WilliamSampaio/febraban_barcode)
-![GitHub Release](https://img.shields.io/github/v/release/WilliamSampaio/febraban_barcode)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/febraban_barcode?style=flat&logo=pypi&logoColor=gold)
-![GitHub License](https://img.shields.io/github/license/WilliamSampaio/febraban_barcode)
+[![Documentation Status](https://readthedocs.org/projects/febraban-barcode/badge/?version=stable&style=flat-square)](https://febraban-barcode.readthedocs.io/pt_BR/stable/?badge=stable)
+![Codecov](https://img.shields.io/codecov/c/github/WilliamSampaio/febraban_barcode?style=flat-square&logo=codecov&labelColor=white)
+![PyPI - Version](https://img.shields.io/pypi/v/febraban_barcode?logo=semver&style=flat-square)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/febraban_barcode?logo=python&logoColor=yellow&labelColor=blue&color=yellow&style=flat-square)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/febraban_barcode?logo=pypi&logoColor=gold&style=flat-square)
+![GitHub License](https://img.shields.io/github/license/WilliamSampaio/febraban_barcode?logo=github&style=flat-square)
 
 Implementação em python do layout padrão de arrecadação/recebimento com utilização do código de barras da Febraban.
 
