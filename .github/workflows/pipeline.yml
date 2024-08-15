@@ -14,4 +14,10 @@ jobs:
       - run: echo $(python -V)
 
       - run: pip install poetry
-      - run: poetry install
+      - run: poetry install --without doc
+      - run: poetry run task test
+      - uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true # optional (default = false)
+          token: ${{ secrets.CODECOV_TOKEN }} # required
+          verbose: true # optional (default = false)
