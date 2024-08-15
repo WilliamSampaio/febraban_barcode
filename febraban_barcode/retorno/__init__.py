@@ -2,7 +2,10 @@ ARRECADACAO_GUICHE_COM_FATURA = '1'
 """1 – Guichê de Caixa com fatura/guia de arrecadação"""
 
 ARRECADACAO_ELETRONICA_COM_FATURA = '2'
-"""2 – Arrecadação Eletrônica com fatura/guia de arrecadação (terminais de auto - atendimento, ATM, home/office banking)"""
+"""
+2 – Arrecadação Eletrônica com fatura/guia de arrecadação (terminais de
+auto - atendimento, ATM, home/office banking)
+"""
 
 ARRECADACAO_INTERNET_COM_FATURA = '3'
 """3 – Internet com fatura/guia de arrecadação"""
@@ -23,7 +26,10 @@ ARRECADACAO_GUICHE_SEM_FATURA = 'a'
 """a – Guichê de Caixa sem fatura/guia de arrecadação"""
 
 ARRECADACAO_ELETRONICA_SEM_FATURA = 'b'
-"""b – Arrecadação Eletrônica sem fatura/guia de arrecadação (terminais de auto - atendimento, ATM, home/office banking)"""
+"""
+b – Arrecadação Eletrônica sem fatura/guia de arrecadação (terminais de
+auto - atendimento, ATM, home/office banking)
+"""
 
 ARRECADACAO_INTERNET_SEM_FATURA = 'c'
 """c – Internet sem fatura/guia de arrecadação"""
