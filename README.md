@@ -1,7 +1,6 @@
 # Febraban Barcode
 
-[![Documentation
-Status](https://readthedocs.org/projects/febraban-barcode/badge/?version=stable)](https://febraban-barcode.readthedocs.io/pt_BR/stable/?badge=stable)
+[![Documentation Status](https://readthedocs.org/projects/febraban-barcode/badge/?version=stable)](https://febraban-barcode.readthedocs.io/pt_BR/stable/?badge=stable)
 ![GitHub Release](https://img.shields.io/github/v/release/WilliamSampaio/febraban_barcode)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/febraban_barcode)
 ![GitHub License](https://img.shields.io/github/license/WilliamSampaio/febraban_barcode)
