@@ -5,7 +5,7 @@ license = "MIT"
 name = "febraban-barcode"
 packages = [{include = "febraban_barcode"}]
 readme = "README.md"
-version = "0.2.0"
+version = "0.3.0"
 
 [tool.poetry.urls]
 "Código" = "https://github.com/WilliamSampaio/febraban_barcode"

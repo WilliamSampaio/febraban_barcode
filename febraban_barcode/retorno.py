@@ -1,21 +1,6 @@
 from datetime import datetime
 
-from . import (
-    ARRECADACAO_CORRESPONDENTES_COM_FATURA,
-    ARRECADACAO_CORRESPONDENTES_SEM_FATURA,
-    ARRECADACAO_ELETRONICA_COM_FATURA,
-    ARRECADACAO_ELETRONICA_SEM_FATURA,
-    ARRECADACAO_GUICHE_COM_FATURA,
-    ARRECADACAO_GUICHE_SEM_FATURA,
-    ARRECADACAO_INTERNET_COM_FATURA,
-    ARRECADACAO_INTERNET_SEM_FATURA,
-    ARRECADACAO_LOTERICAS_COM_FATURA,
-    ARRECADACAO_LOTERICAS_SEM_FATURA,
-    ARRECADACAO_OUTROS_COM_FATURA,
-    ARRECADACAO_OUTROS_SEM_FATURA,
-    ARRECADACAO_TELEFONE_COM_FATURA,
-    ARRECADACAO_TELEFONE_SEM_FATURA,
-)
+from febraban_barcode import constants as c
 
 
 def registro_A(
@@ -137,7 +122,7 @@ def registro_G(
     conta_digito='0',
     data_pagamento='',
     data_credito='',
-    barcode_44=' ',
+    codigo_de_barras_44=' ',
     valor_recebido=0.0,
     valor_tarifa=0.0,
     nsr=None,
@@ -157,7 +142,7 @@ def registro_G(
         conta_digito (str, optional): G.02 - Identificação do dígito da conta da empresa/órgão creditada. Defaults to '0'.
         data_pagamento (str, optional): G.03 - Data de pagamento (AAAA/MM/DD). Defaults to ''.
         data_credito (str, optional): G.04 - Data de crédito (AAAA/MM/DD). Defaults to ''.
-        barcode_44 (str, optional): G.05 - Código de Barras (44 posições). Defaults to ' '.
+        codigo_de_barras_44 (str, optional): G.05 - Código de Barras (44 posições). Defaults to ' '.
         valor_recebido (float, optional): G.06 - Valor recebido. Defaults to 0.0.
         valor_tarifa (float, optional): G.07 - Valor da tarifa referente a cada comprovante arrecadado (será informado desde que acordado entre as partes). Defaults to 0.0.
         nsr (_type_, optional): G.08 - NSR - Número Seqüencial de Registro. Defaults to None.
@@ -240,11 +225,11 @@ def registro_G(
         )
     registro_g += data_credito
 
-    if len(barcode_44) != 44:
+    if len(codigo_de_barras_44) != 44:
         raise Exception(
             'Campo G.05 Inválido. O campo deve ser um código de barras de 44 posições.'
         )
-    registro_g += barcode_44
+    registro_g += codigo_de_barras_44
 
     if not isinstance(valor_recebido, float):
         raise Exception('Campo G.06 Inválido. O campo deve ser um float.')
@@ -268,20 +253,20 @@ def registro_G(
         raise Exception('Campo G.10 Inválido. O campo deve ter o tamanho 1.')
 
     if forma_arrecadacao not in [
-        ARRECADACAO_GUICHE_COM_FATURA,
-        ARRECADACAO_ELETRONICA_COM_FATURA,
-        ARRECADACAO_INTERNET_COM_FATURA,
-        ARRECADACAO_OUTROS_COM_FATURA,
-        ARRECADACAO_CORRESPONDENTES_COM_FATURA,
-        ARRECADACAO_TELEFONE_COM_FATURA,
-        ARRECADACAO_LOTERICAS_COM_FATURA,
-        ARRECADACAO_GUICHE_SEM_FATURA,
-        ARRECADACAO_ELETRONICA_SEM_FATURA,
-        ARRECADACAO_INTERNET_SEM_FATURA,
-        ARRECADACAO_CORRESPONDENTES_SEM_FATURA,
-        ARRECADACAO_TELEFONE_SEM_FATURA,
-        ARRECADACAO_OUTROS_SEM_FATURA,
-        ARRECADACAO_LOTERICAS_SEM_FATURA,
+        c.ARRECADACAO_GUICHE_COM_FATURA,
+        c.ARRECADACAO_ELETRONICA_COM_FATURA,
+        c.ARRECADACAO_INTERNET_COM_FATURA,
+        c.ARRECADACAO_OUTROS_COM_FATURA,
+        c.ARRECADACAO_CORRESPONDENTES_COM_FATURA,
+        c.ARRECADACAO_TELEFONE_COM_FATURA,
+        c.ARRECADACAO_LOTERICAS_COM_FATURA,
+        c.ARRECADACAO_GUICHE_SEM_FATURA,
+        c.ARRECADACAO_ELETRONICA_SEM_FATURA,
+        c.ARRECADACAO_INTERNET_SEM_FATURA,
+        c.ARRECADACAO_CORRESPONDENTES_SEM_FATURA,
+        c.ARRECADACAO_TELEFONE_SEM_FATURA,
+        c.ARRECADACAO_OUTROS_SEM_FATURA,
+        c.ARRECADACAO_LOTERICAS_SEM_FATURA,
     ]:
         raise Exception('Campo G.10 Inválido.')
 

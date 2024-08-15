@@ -7,10 +7,12 @@ from PIL import Image
 
 
 def image_png(
-    filename: str | Path, barcode: str, linha_digitavel: str | None = None
+    filename: str | Path,
+    codigo_de_barras: str,
+    linha_digitavel: str | None = None,
 ) -> None:
     data = BytesIO()
-    ITF(barcode, writer=ImageWriter()).write(
+    ITF(codigo_de_barras, writer=ImageWriter()).write(
         data,
         options={
             'module_width': float(0.3),
@@ -26,10 +28,12 @@ def image_png(
 
 
 def image_svg(
-    filename: str | Path, barcode: str, linha_digitavel: str | None = None
+    filename: str | Path,
+    codigo_de_barras: str,
+    linha_digitavel: str | None = None,
 ) -> None:
     with open(filename, 'wb') as f:
-        ITF(barcode, writer=SVGWriter()).write(
+        ITF(codigo_de_barras, writer=SVGWriter()).write(
             f,
             options={
                 'module_width': float(0.3),
