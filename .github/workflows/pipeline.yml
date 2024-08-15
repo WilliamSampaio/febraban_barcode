@@ -6,5 +6,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Hello World!
-        run: echo "Hello $USER!"
+      - name: Clone repo
+        uses: actions/checkout@v4
+
+      - name: Ls
+        run: echo $(ls -lah)
