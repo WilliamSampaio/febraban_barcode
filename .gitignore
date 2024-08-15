@@ -182,3 +182,4 @@ pyrightconfig.json
 *.svg
 *.html
 db.json
+coveralls

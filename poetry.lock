@@ -958,6 +958,23 @@ files = [
 images = ["pillow"]
 
 [[package]]
+name = "python-coveralls"
+version = "2.9.3"
+description = "Python interface to coveralls.io API\n"
+optional = false
+python-versions = "*"
+files = [
+    {file = "python-coveralls-2.9.3.tar.gz", hash = "sha256:bfaf7811e7dc5628e83b6b162962a4e2485dbff184b30e49f380374ed1bcee55"},
+    {file = "python_coveralls-2.9.3-py2.py3-none-any.whl", hash = "sha256:fb0ff49bb1551dac10b06bd55e9790287d898a0f1e2c959802235cae08dd0bff"},
+]
+
+[package.dependencies]
+coverage = "*"
+PyYAML = "*"
+requests = "*"
+six = "*"
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 description = "Extensions to the standard Python datetime module"
@@ -1273,4 +1290,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c3c3e0e722a1670ed10c4f0d0e980d7d6880a4dca6c282812cdbef661374852a"
+content-hash = "fe01bb667a16be100763035a80946916f236a182bb448fe19b2cf602af0a1685"
