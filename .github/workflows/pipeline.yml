@@ -9,5 +9,8 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v4
 
-      - name: Ls
-        run: echo $(ls -lah)
+      - name: Install python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+        run: echo $(python -V)
