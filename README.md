@@ -10,7 +10,7 @@ Implementação em python do layout padrão de arrecadação/recebimento com uti
 
 A arrecadação de tributos/taxas estaduais e municipais e contas de concessionárias de serviços públicos com código de barras segue as especificações técnicas definidas pela Febraban - Federação Brasileira de Bancos, atualmente na versão 6 do layout.
 
-[Layout Padrão de Arrecadação/Recebimento com Utilização do Código de Barras](https://portal.febraban.org.br/pagina/3166/33/pt-br/layour-arrecadacao)
+[Layout Padrão de Arrecadação/Recebimento com Utilização do Código de Barras - versão 7](https://portal.febraban.org.br/pagina/3327/33/pt-br/layout-codigo-barras)
 
 Com este pacote é possível:
 
