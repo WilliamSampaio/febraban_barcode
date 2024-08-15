@@ -26,6 +26,7 @@ taskipy = "^1.13.0"
 tinydb = "^4.8.0"
 
 [tool.poetry.group.doc.dependencies]
+mkdocs = "^1.6.0"
 mkdocs-material = "^9.1.21"
 mkdocstrings = "^0.22.0"
 mkdocstrings-python = "^1.2.1"
