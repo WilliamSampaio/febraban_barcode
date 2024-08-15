@@ -4,5 +4,18 @@ repo_name: WilliamSampaio/febraban_barcode
 edit_uri: tree/master/docs
 
 theme:
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   name: material
   language: pt-BR
