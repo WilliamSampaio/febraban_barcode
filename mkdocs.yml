@@ -4,6 +4,7 @@ repo_name: WilliamSampaio/febraban_barcode
 edit_uri: tree/master/docs
 
 theme:
+  name: material
   palette:
     # Palette toggle for light mode
     - scheme: default
@@ -17,5 +18,4 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
-  name: mkdocs
   language: pt-BR
