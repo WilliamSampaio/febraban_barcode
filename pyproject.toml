@@ -1,7 +1,7 @@
 [tool.poetry]
 authors = ["William Sampaio <1997wbms@gmail.com>"]
 description = "Implementação em python do layout padrão de arrecadação/recebimento com utilização do código de barras da Febraban."
-license = "MIT"
+license = {file = "LICENSE"}
 name = "febraban-barcode"
 packages = [{include = "febraban_barcode"}]
 readme = "README.md"
